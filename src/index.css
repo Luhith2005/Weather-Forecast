@@ -560,14 +560,8 @@ body {
 /* Grid of secondary items (e.g. Sunrise/Sunset, Feels like) */
 .metrics-card-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-}
-
-@media (max-width: 576px) {
-  .metrics-card-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .metric-panel {
