@@ -1,5 +1,7 @@
 # Skyline Weather Forecast Dashboard
 
+![Skyline Weather Dashboard](screenshot.png)
+
 A premium, interactive weather dashboard built in **React.js** and **Vite**, styled to match the exact aesthetics, layout, and behaviors of the **Google Search Weather** interface.
 
 ---

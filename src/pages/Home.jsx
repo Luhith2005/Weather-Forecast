@@ -32,6 +32,10 @@ export default function Home() {
   const [unit, setUnit] = useState('C');
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [isMapMaximized, setIsMapMaximized] = useState(false);
+  const [recentSearches, setRecentSearches] = useState(() => {
+    const saved = localStorage.getItem('recentSearches');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme ? savedTheme === 'dark' : true; 
@@ -251,6 +255,26 @@ export default function Home() {
     setError(null);
     setSelectedDayIndex(0);
     setCurrentCity(city);
+
+    // Save to search history
+    setRecentSearches((prev) => {
+      if (city.name === 'Current Location') return prev;
+      const filtered = prev.filter(
+        (c) => c.name.toLowerCase() !== city.name.toLowerCase()
+      );
+      const updated = [city, ...filtered].slice(0, 5);
+      localStorage.setItem('recentSearches', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleDeleteRecentSearch = (name, e) => {
+    e.stopPropagation();
+    setRecentSearches((prev) => {
+      const updated = prev.filter((c) => c.name !== name);
+      localStorage.setItem('recentSearches', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const handleSearchError = (msg) => {
@@ -321,6 +345,35 @@ export default function Home() {
             />
 
             <div className="glass-panel recent-searches-card animate-fade-in stagger-3">
+              <h3 className="card-title">
+                <Icons.History size={18} style={{ color: 'var(--accent-color)' }} />
+                Recent Searches
+              </h3>
+              {recentSearches.length === 0 ? (
+                <div className="no-history">No search history yet. Try searching for a city!</div>
+              ) : (
+                <div className="recent-list">
+                  {recentSearches.map((city) => (
+                    <div
+                      key={city.name + city.latitude}
+                      className="recent-item animate-fade-in"
+                      onClick={() => handleSelectCity(city)}
+                    >
+                      <span>{city.name}</span>
+                      <button
+                        className="recent-delete-btn"
+                        onClick={(e) => handleDeleteRecentSearch(city.name, e)}
+                        title="Remove city from history"
+                      >
+                        <Icons.X size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="glass-panel recent-searches-card animate-fade-in stagger-4">
               <h3 className="card-title">
                 <Icons.Star size={18} fill="#eab308" style={{ color: '#eab308' }} />
                 Saved Locations
