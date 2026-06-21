@@ -9,14 +9,12 @@ export default function SearchBar({ onSelectCity, onSearchError, currentCityName
   const [isSearching, setIsSearching] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Sync search input value with the active city name
   useEffect(() => {
     if (currentCityName) {
       setQuery(currentCityName);
     }
   }, [currentCityName]);
 
-  // Debounced autocomplete query
   useEffect(() => {
     if (query.trim().length < 2 || query === 'Current Location') {
       setSuggestions([]);
@@ -35,7 +33,6 @@ export default function SearchBar({ onSelectCity, onSearchError, currentCityName
     return () => clearTimeout(delayDebounceFn);
   }, [query]);
 
-  // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

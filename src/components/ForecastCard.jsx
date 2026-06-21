@@ -6,9 +6,8 @@ export default function ForecastCard({ weatherData, unit, selectedDayIndex, setS
   if (!weatherData || !weatherData.daily) return null;
 
   const { daily } = weatherData;
-  const days = daily.time; // This contains 7 days (index 0 to 6)
+  const days = daily.time; 
 
-  // Convert temperature to Fahrenheit if selected
   const formatTemp = (val) => {
     const converted = unit === 'C' ? val : (val * 9) / 5 + 32;
     return Math.round(converted);
@@ -32,7 +31,7 @@ export default function ForecastCard({ weatherData, unit, selectedDayIndex, setS
           const tempMax = daily.temperature_2m_max[index];
           const tempMin = daily.temperature_2m_min[index];
 
-          const { iconName } = getWeatherConfig(code, 1); // Default to day icons
+          const { iconName } = getWeatherConfig(code, 1); 
           const DayIcon = Icons[iconName] || Icons.HelpCircle;
 
           const isActive = selectedDayIndex === index;

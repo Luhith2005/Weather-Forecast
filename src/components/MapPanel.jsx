@@ -8,7 +8,6 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
   
   const [mapType, setMapType] = useState('streets');
 
-  // Define tile urls
   const tileProviders = {
     streets: {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -24,7 +23,6 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
     }
   };
 
-  // Initialize Map
   useEffect(() => {
     if (!mapContainerRef.current) return;
     if (!window.L) {
@@ -34,26 +32,22 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
 
     const L = window.L;
 
-    // Create map instance
     const map = L.map(mapContainerRef.current, {
-      zoomControl: false // keep it clean
+      zoomControl: false 
     }).setView([latitude, longitude], 11);
     
     mapRef.current = map;
 
-    // Create and add default tile layer
     const streetsLayer = L.tileLayer(tileProviders.streets.url, {
       attribution: tileProviders.streets.attribution,
       maxZoom: 19
     }).addTo(map);
     activeTileLayerRef.current = streetsLayer;
 
-    // Create marker
     const marker = L.marker([latitude, longitude]).addTo(map);
     marker.bindPopup(`<b>${cityName}</b>`).openPopup();
     markerRef.current = marker;
 
-    // Resize observer to handle container size changes dynamically
     const resizeObserver = new ResizeObserver(() => {
       map.invalidateSize();
     });
@@ -66,7 +60,6 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
     };
   }, []);
 
-  // Update center when coords change
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.setView([latitude, longitude], isMaximized ? 13 : 11);
@@ -77,18 +70,15 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
     }
   }, [latitude, longitude, cityName, isMaximized]);
 
-  // Update tile layer when mapType changes
   useEffect(() => {
     if (!mapRef.current || !window.L) return;
     
     const L = window.L;
     
-    // Remove previous layer
     if (activeTileLayerRef.current) {
       mapRef.current.removeLayer(activeTileLayerRef.current);
     }
 
-    // Add new layer
     const provider = tileProviders[mapType];
     const newLayer = L.tileLayer(provider.url, {
       attribution: provider.attribution,
@@ -100,15 +90,15 @@ export default function MapPanel({ latitude, longitude, cityName, isMaximized })
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '16px', overflow: 'hidden' }}>
-      {/* Map Element */}
+      {}
       <div ref={mapContainerRef} style={{ width: '100%', height: '100%', zIndex: 1 }} />
 
-      {/* Layer Toggle Bar Over Map */}
+      {}
       <div className="map-view-controls">
         <button 
           className={`map-view-btn ${mapType === 'streets' ? 'active' : ''}`}
           onClick={(e) => {
-            e.stopPropagation(); // Avoid maximizing on overlay click
+            e.stopPropagation(); 
             setMapType('streets');
           }}
         >

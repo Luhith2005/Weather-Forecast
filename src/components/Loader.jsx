@@ -3,9 +3,9 @@ import React from 'react';
 export default function Loader() {
   return (
     <div className="dashboard-grid animate-fade-in">
-      {/* Left side skeletons */}
+      {}
       <div className="left-column">
-        {/* Current weather skeleton */}
+        {}
         <div className="glass-panel weather-card" style={{ minHeight: '380px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
             <div>
@@ -33,7 +33,7 @@ export default function Loader() {
           </div>
         </div>
         
-        {/* Recent searches skeleton */}
+        {}
         <div className="glass-panel recent-searches-card">
           <div className="shimmer" style={{ width: '120px', height: '22px', borderRadius: '6px', marginBottom: '1rem' }} />
           <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -44,9 +44,9 @@ export default function Loader() {
         </div>
       </div>
       
-      {/* Right side skeletons */}
+      {}
       <div className="right-column">
-        {/* Secondary metrics grid skeleton */}
+        {}
         <div className="metrics-card-grid">
           {[1, 2].map((i) => (
             <div key={i} className="glass-panel metric-panel">
@@ -59,7 +59,7 @@ export default function Loader() {
           ))}
         </div>
         
-        {/* 5-day forecast skeleton */}
+        {}
         <div className="glass-panel forecast-card" style={{ flex: 1 }}>
           <div className="shimmer" style={{ width: '150px', height: '24px', borderRadius: '6px', marginBottom: '1.5rem' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

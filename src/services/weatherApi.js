@@ -1,10 +1,4 @@
-// Weather API service using Open-Meteo API (100% free, keyless)
 
-/**
- * Searches for cities by name using Open-Meteo Geocoding API.
- * @param {string} query The city search query.
- * @returns {Promise<Array>} List of matched cities with coords and location metadata.
- */
 export async function searchCities(query) {
   if (!query || query.trim().length < 2) return [];
   
@@ -16,7 +10,6 @@ export async function searchCities(query) {
     const data = await response.json();
     const results = data.results || [];
     
-    // Filter to only include cities/places in India
     return results
       .filter(city => 
         city.country_code?.toUpperCase() === 'IN' || 
@@ -29,13 +22,6 @@ export async function searchCities(query) {
   }
 }
 
-/**
- * Fetches comprehensive weather metrics and daily forecast data.
- * @param {number} lat Latitude of location.
- * @param {number} lon Longitude of location.
- * @param {string} timezone Optional timezone (e.g. "Europe/London" or "auto").
- * @returns {Promise<object>} Current weather data and 5-day forecast.
- */
 export async function fetchWeatherData(lat, lon, timezone = 'auto') {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=${encodeURIComponent(timezone)}`;
   
@@ -50,12 +36,6 @@ export async function fetchWeatherData(lat, lon, timezone = 'auto') {
   }
 }
 
-/**
- * Fetches current Air Quality Index and pollutant stats.
- * @param {number} lat Latitude of location.
- * @param {number} lon Longitude of location.
- * @returns {Promise<object|null>} AQI metadata.
- */
 export async function fetchAirQuality(lat, lon) {
   const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm2_5,pm10`;
   try {
@@ -69,17 +49,9 @@ export async function fetchAirQuality(lat, lon) {
   }
 }
 
-/**
- * Helper to get the correct weather details (label, description, icon name) based on WMO code.
- * @param {number} code WMO code.
- * @param {number|boolean} isDay Whether it is day time (1 or true) or night (0 or false).
- * @returns {object} { label, iconName }
- */
 export function getWeatherConfig(code, isDay = 1) {
   const day = !!isDay;
   
-  // WMO Weather interpretation codes
-  // https://open-meteo.com/en/docs
   const mappings = {
     0: { label: 'Clear Sky', icon: day ? 'Sun' : 'Moon' },
     1: { label: 'Mainly Clear', icon: day ? 'CloudSun' : 'CloudMoon' },

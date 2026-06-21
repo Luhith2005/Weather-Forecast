@@ -8,7 +8,6 @@ import Loader from '../components/Loader';
 import MapPanel from '../components/MapPanel';
 import { fetchWeatherData, fetchAirQuality } from '../services/weatherApi';
 
-// Default city is Hyderabad (referenced in prompt examples)
 const DEFAULT_CITY = {
   name: 'Hyderabad',
   latitude: 17.3850,
@@ -35,10 +34,9 @@ export default function Home() {
   const [isMapMaximized, setIsMapMaximized] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme === 'dark' : true; // Default to dark mode for premium look
+    return savedTheme ? savedTheme === 'dark' : true; 
   });
 
-  // Detect user's current location on mount
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -55,7 +53,6 @@ export default function Home() {
             timezone: 'auto'
           });
 
-          // Reverse geocode asynchronously to show real neighborhood/city name
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
             .then((res) => (res.ok ? res.json() : null))
             .then((data) => {
@@ -81,7 +78,6 @@ export default function Home() {
     }
   }, []);
 
-  // Sync theme with HTML attribute
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -92,7 +88,6 @@ export default function Home() {
     }
   }, [isDarkMode]);
 
-  // Close map modal on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -105,7 +100,6 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMapMaximized]);
 
-  // Fetch weather and air quality data when city changes
   useEffect(() => {
     let active = true;
 
@@ -227,7 +221,6 @@ export default function Home() {
           timezone: 'auto'
         });
 
-        // Reverse geocode asynchronously
         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
           .then((res) => (res.ok ? res.json() : null))
           .then((data) => {
@@ -311,7 +304,7 @@ export default function Home() {
         <Loader />
       ) : (
         <div className="dashboard-grid">
-          {/* Left Column: Current Weather Details & Recent History */}
+          {}
           <div className="left-column">
             <WeatherCard
               weatherData={weatherData}
@@ -360,7 +353,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column: Sunrise/Sunset & 5-Day Forecast */}
+          {}
           <div className="right-column">
             <div className="metrics-card-grid">
               <div className="glass-panel metric-panel animate-fade-in stagger-3">
@@ -440,7 +433,7 @@ export default function Home() {
               setSelectedDayIndex={setSelectedDayIndex}
             />
 
-            {/* Location Map Panel */}
+            {}
             <div className="glass-panel map-card animate-fade-in stagger-4" style={{ height: '320px', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 className="card-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}>
