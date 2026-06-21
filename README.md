@@ -20,25 +20,27 @@ A premium, interactive weather dashboard built in **React.js** and **Vite**, sty
 - Integrated **Feels-Like** apparent temperature alongside real-time humidity, wind speed, and precipitation levels.
 - Horizontal hourly scrolling tabs for Temperature graph, Precipitation probability, and dynamic rotating wind vector arrows.
 
-### 📊 7-Day Forecast Cards
-- Horizontal forecast deck showing weekdays, condition icons, and daily max/min temperatures.
-- Selecting any daily card updates the entire dashboard with that day's statistics and averages.
-- Active card highlighted with Google's flat silver/gray card design.
+### 📅 7-Day Vertical Forecast & Dynamic Range Bar
+- Vertical forecast deck embedded directly inside the bottom of the main **Weather Card**, stacked downwards to prevent horizontal screen overflow.
+- Features a **Dynamic Temperature Range Bar** that scales and shifts the temperature slider dynamically relative to the overall weekly temperature range (minimum and maximum of all 7 days).
+- Selecting any daily row updates the entire dashboard with that day's statistics, hourly chart, and averages.
 
 ### 🗺️ Interactive Maps (Streets, Satellite, Terrain)
 - Integrated custom keyless Leaflet map widget inside both the dashboard and the fullscreen maximized modal.
 - Supports instant switches between **Streets** (OSM standard), **Satellite** (Esri World Imagery), and **Terrain** (Esri Topo Map) tile sets.
 
-### ☀️ Air Quality & UV Index (2x2 Metrics Grid)
-- **Air Quality (AQI)**: Displays the current US AQI index alongside descriptive status ratings and color safety dots.
-- **UV Index**: Daily maximum UV index with risk severity ratings.
-- **Sunrise & Sunset**: Daily local sunrise/sunset clock times.
+### ☀️ Air Quality & UV Index (Single Column Stack)
+- Stacks key weather indices vertically for a cleaner, responsive structure:
+  - **Air Quality (AQI)**: Displays the current US AQI index alongside descriptive status ratings and color safety dots.
+  - **UV Index**: Daily maximum UV index with risk severity ratings.
+  - **Sunrise & Sunset**: Daily local sunrise/sunset clock times.
 
-### ⭐ Saved Locations (Favorites)
+### ⭐ Saved Locations (Favorites) with Seeding
 - Gold star button to save/remove active cities from your **Saved Locations** sidebar, persisted across reloads using `localStorage`.
+- Pre-seeded on first load with **Hyderabad**, **Bangalore**, and **Chennai** to demonstrate instant storage persistence.
 
-### 🌓 Clean Dual Theme Layout
-- Supports light mode (clean white background and soft grays) and high-contrast dark charcoal slate theme, both toggled seamlessly with a single switch.
+### 🎨 Dynamic Weather Background Gradients
+- App background gradient changes smoothly based on the current weather condition of the selected day (Sunny, Rainy, Cloudy, Stormy, or Night) for both light and dark modes.
 
 ---
 
