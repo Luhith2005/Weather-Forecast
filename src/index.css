@@ -245,7 +245,7 @@ body {
   background: var(--accent-gradient);
   border: none;
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 100px;
   font-family: var(--font-sans);
   font-weight: 600;
@@ -641,11 +641,25 @@ body {
 
 .forecast-item:hover {
   transform: translateX(4px);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.04) !important;
 }
 
 [data-theme="light"] .forecast-item:hover {
-  background: rgba(0, 0, 0, 0.01);
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.forecast-item.active {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="light"] .forecast-item.active {
+  background: rgba(14, 165, 233, 0.12) !important;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.1);
+}
+
+[data-theme="dark"] .forecast-item.active {
+  background: rgba(56, 189, 248, 0.08) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
 .forecast-day {

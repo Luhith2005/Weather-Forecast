@@ -3,7 +3,6 @@ import * as Icons from 'lucide-react';
 import Navbar from '../components/Navbar';
 import SearchBar from '../components/SearchBar';
 import WeatherCard from '../components/WeatherCard';
-import ForecastCard from '../components/ForecastCard';
 import Loader from '../components/Loader';
 import MapPanel from '../components/MapPanel';
 import { fetchWeatherData, fetchAirQuality } from '../services/weatherApi';
@@ -18,6 +17,47 @@ const DEFAULT_CITY = {
   timezone: 'Asia/Kolkata'
 };
 
+const DEFAULT_FAVORITES = [
+  { name: 'Hyderabad', latitude: 17.3850, longitude: 78.4867, country: 'India', country_code: 'IN', admin1: 'Telangana', timezone: 'Asia/Kolkata' },
+  { name: 'Bangalore', latitude: 12.9716, longitude: 77.5946, country: 'India', country_code: 'IN', admin1: 'Karnataka', timezone: 'Asia/Kolkata' },
+  { name: 'Chennai', latitude: 13.0827, longitude: 80.2707, country: 'India', country_code: 'IN', admin1: 'Tamil Nadu', timezone: 'Asia/Kolkata' }
+];
+
+const getDynamicBackground = (code, isDark, isDayCode) => {
+  if (isDark) {
+    if (code === undefined || code === null) {
+      return 'radial-gradient(circle at 50% 0%, #0c1e3d 0%, #070d19 60%, #03060c 100%)';
+    }
+    if ([95, 96, 99].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #2e1065 0%, #0f172a 65%, #020617 100%)';
+    }
+    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 85, 86].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 65%, #020617 100%)';
+    }
+    if ([3, 45, 48].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1329 65%, #030712 100%)';
+    }
+    if (isDayCode === 0) {
+      return 'radial-gradient(circle at 50% 0%, #172554 0%, #020617 70%, #020617 100%)';
+    }
+    return 'radial-gradient(circle at 50% 0%, #0c1e3d 0%, #070d19 60%, #03060c 100%)';
+  } else {
+    if (code === undefined || code === null) {
+      return 'radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 70%, #eff6ff 100%)';
+    }
+    if ([95, 96, 99].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #cbd5e1 0%, #94a3b8 65%, #475569 100%)';
+    }
+    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 85, 86].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #e0f2fe 0%, #b9cbd9 60%, #94a3b8 100%)';
+    }
+    if ([3, 45, 48].includes(code)) {
+      return 'radial-gradient(circle at 50% 0%, #f1f5f9 0%, #e2e8f0 70%, #cbd5e1 100%)';
+    }
+    return 'radial-gradient(circle at 50% 0%, #ffedd5 0%, #f0f9ff 60%, #e0f2fe 100%)';
+  }
+};
+
 export default function Home() {
   const [currentCity, setCurrentCity] = useState(DEFAULT_CITY);
 
@@ -25,7 +65,12 @@ export default function Home() {
   const [airQualityData, setAirQualityData] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('favoriteCities');
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      return JSON.parse(saved);
+    } else {
+      localStorage.setItem('favoriteCities', JSON.stringify(DEFAULT_FAVORITES));
+      return DEFAULT_FAVORITES;
+    }
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -91,6 +136,18 @@ export default function Home() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const code = selectedDayIndex === 0
+      ? weatherData?.current?.weather_code
+      : weatherData?.daily?.weather_code?.[selectedDayIndex];
+    const isDayCode = selectedDayIndex === 0
+      ? weatherData?.current?.is_day
+      : 1;
+
+    const bg = getDynamicBackground(code, isDarkMode, isDayCode);
+    document.body.style.background = bg;
+  }, [weatherData, selectedDayIndex, isDarkMode]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -340,6 +397,7 @@ export default function Home() {
               setUnit={setUnit}
               onGeolocate={handleGeolocate}
               selectedDayIndex={selectedDayIndex}
+              setSelectedDayIndex={setSelectedDayIndex}
               isFavorite={isCurrentCityFavorite}
               onToggleFavorite={() => handleToggleFavorite(currentCity)}
             />
@@ -479,12 +537,6 @@ export default function Home() {
               </div>
             </div>
 
-            <ForecastCard 
-              weatherData={weatherData} 
-              unit={unit} 
-              selectedDayIndex={selectedDayIndex}
-              setSelectedDayIndex={setSelectedDayIndex}
-            />
 
             {}
             <div className="glass-panel map-card animate-fade-in stagger-4" style={{ height: '320px', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1.25rem' }}>
